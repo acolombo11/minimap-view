@@ -20,6 +20,7 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private var isVisible = false
 
     // Default Sizes
+    // TODO Make these values customizable by xml
     private var maxSize = resources.getDimension(R.dimen.minimap_size)
     private var borderWidth = resources.getDimension(R.dimen.minimap_border_width)
     private var cornerRadius = resources.getDimension(R.dimen.minimap_corner_radius)
@@ -35,7 +36,7 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private var indicatorX = 0f
     private var indicatorY = 0f
 
-    // Custom paints
+    // Custom default paints
     private val backgroundPaint = Paint().apply {
         style = Paint.Style.FILL
         color = ContextCompat.getColor(context, R.color.colorDefaultBackground)
@@ -48,7 +49,7 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         strokeWidth = borderWidth
     }
 
-
+    // TODO Do the same for ScrollView
     fun setRecyclerView(recyclerView: RecyclerView) {
         updateScaleFactor(recyclerView)
 
@@ -70,25 +71,24 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         updateVisibility(recyclerView)
         if (isVisible) {
 
-            // The height of the recyclerView might be bigger than the scrollable width of the recyclerView
+            // Scrollable height might be < than the scrollable width while scrollable width being < than total height of the RecyclerView
             val biggerWidth = maxOf(scrollWidth, recyclerView.width.toFloat())
-            val biggerHeight = recyclerView.height.toFloat()
+            val biggerHeight = maxOf(scrollHeight, recyclerView.height.toFloat())
 
+            // So, when calculating scaleFactor, we need the bigger size to fit into the maxSize of the view
             scaleFactor = when {
-
-                biggerWidth > biggerHeight -> biggerWidth / (if (totalWidth != 0f) minOf(
-                    maxSize,
-                    totalWidth
-                ) else maxSize)
-                biggerWidth < biggerHeight -> biggerHeight / (if (totalHeight != 0f) minOf(
-                    maxSize,
-                    totalHeight
-                ) else maxSize)
+                biggerWidth > biggerHeight -> {
+                    biggerWidth / if (totalWidth != 0f) minOf(maxSize, totalWidth) else maxSize
+                }
+                biggerWidth < biggerHeight -> {
+                    biggerHeight / if (totalHeight != 0f) minOf(maxSize, totalHeight) else maxSize
+                }
                 else -> scrollWidth / maxSize
             }
 
-            totalWidth = maxOf(scrollWidth, recyclerView.width.toFloat()) / scaleFactor
-            totalHeight = maxOf(scrollHeight, recyclerView.height.toFloat()) / scaleFactor
+            // TODO Make it possible to choose a desired width or height which stays the same, instead of just one mazSize to stay inside of
+            totalWidth = biggerWidth / scaleFactor
+            totalHeight = biggerHeight / scaleFactor
 
             if (scaleFactor != 0f) {
                 indicatorWidth = recyclerView.width / scaleFactor
@@ -99,30 +99,26 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         }
     }
 
-    private fun updateVisibility(recyclerView: RecyclerView): Boolean {
-        return if (shouldBeVisible(recyclerView)) {
-            visibility = recyclerView.visibility
-            isVisible = recyclerView.visibility == View.VISIBLE
-            true
-        } else {
-            visibility = View.GONE
-            isVisible = false
-            false
-        }
+    private fun updateVisibility(recyclerView: RecyclerView) = if (shouldBeVisible(recyclerView)) {
+        visibility = recyclerView.visibility
+        isVisible = recyclerView.visibility == View.VISIBLE
+        true
+    } else {
+        visibility = View.GONE
+        isVisible = false
+        false
     }
 
     private fun shouldBeVisible(recyclerView: RecyclerView?) =
         recyclerView != null && (scrollWidth > recyclerView.width || scrollHeight > recyclerView.height)
 
-    private fun moveIndicator(dx: Int, dy: Int): Boolean {
-        return if (scaleFactor != 0f) {
-            indicatorX += dx / scaleFactor
-            indicatorY += dy / scaleFactor
-            invalidate()
-            true
-        } else {
-            false
-        }
+    private fun moveIndicator(dx: Int, dy: Int) = if (scaleFactor != 0f) {
+        indicatorX += dx / scaleFactor
+        indicatorY += dy / scaleFactor
+        invalidate()
+        true
+    } else {
+        false
     }
 
     private fun drawIndicator(canvas: Canvas?) {
@@ -160,6 +156,7 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         val widthSize = View.MeasureSpec.getSize(widthMeasureSpec)
         val heightSize = View.MeasureSpec.getSize(heightMeasureSpec)
 
+        // TODO Check how everything is working with exact size
         val width = if (widthMode == View.MeasureSpec.EXACTLY) widthSize.toFloat() else minOf(maxSize, totalWidth)
         val height = if (heightMode == View.MeasureSpec.EXACTLY) heightSize.toFloat() else minOf(maxSize, totalHeight)
 
