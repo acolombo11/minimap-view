@@ -54,14 +54,11 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
         invalidate()
 
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (isVisible) moveIndicator(dx, dy)
-            }
-        })
+        recyclerView.addScrollListener { dx, dy ->
+            if (isVisible) moveIndicator(dx, dy)
+        }
 
-        recyclerView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+        recyclerView.addLayoutChangeListener {
             updateScaleFactor(recyclerView)
         }
     }
