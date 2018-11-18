@@ -9,11 +9,15 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        private const val PARKING_LOT_WIDTH = 9
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         
-        val layoutManager = FixedGridLayoutManager().apply { setTotalColumnCount(8) }
+        val layoutManager = FixedGridLayoutManager().apply { setTotalColumnCount(PARKING_LOT_WIDTH) }
         val adapter = ParkingAdapter(getExampleParkingLot().flatten())
 
         recyclerView.layoutManager = layoutManager
@@ -22,41 +26,68 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getExampleParkingLot(): List<List<Parking>> {
-        val parkingLot1 = Parking.getEmptyParkingLot(4)
-        parkingLot1[0][0].car = Car.RED
-        parkingLot1[0][2].car = Car.AZURE
-        parkingLot1[1][1].car = Car.YELLOW
-        parkingLot1[1][2].car = Car.BROWN
-        val parkingLot2 = Parking.getEmptyParkingLot(2)
-        parkingLot2[0][1].car = Car.GREEN
-        parkingLot2[0][3].car = Car.BLUE
-        val parkingLot3 = Parking.getEmptyParkingLot(4)
 
+        // Init the parking lot
         val bigParkingLot : MutableList<MutableList<Parking>> = mutableListOf()
-        bigParkingLot[0] = mutableListOf()
-        bigParkingLot[0].addAll(parkingLot1[0])
-        bigParkingLot[0].addAll(listOf(Parking(), Parking()))
-        bigParkingLot[0].addAll(parkingLot2[0])
-        bigParkingLot[1] = mutableListOf()
-        bigParkingLot[1].addAll(parkingLot1[1])
-        bigParkingLot[1].addAll(listOf(Parking(), Parking()))
-        bigParkingLot[1].addAll(parkingLot2[1])
-        bigParkingLot[2].addAll(listOf(Parking(), Parking(), Parking(), Parking(), Parking(), Parking(), Parking(), Parking()))
-        bigParkingLot[3] = mutableListOf()
-        bigParkingLot[3].addAll(parkingLot3[0])
-        bigParkingLot[3].addAll(listOf(Parking(), Parking(), Parking(), Parking(), Parking(), Parking()))
-        bigParkingLot[4] = mutableListOf()
-        bigParkingLot[4].addAll(parkingLot3[1])
-        bigParkingLot[4].addAll(listOf(Parking(), Parking(), Parking(), Parking(), Parking(), Parking()))
-        bigParkingLot[5].addAll(listOf(Parking(), Parking(), Parking(), Parking(), Parking(), Parking(), Parking(), Parking()))
-        bigParkingLot[6] = mutableListOf()
-        bigParkingLot[6].addAll(parkingLot3[0])
-        bigParkingLot[6].addAll(listOf(Parking(), Parking()))
-        bigParkingLot[6].addAll(parkingLot2[0])
-        bigParkingLot[7] = mutableListOf()
-        bigParkingLot[7].addAll(parkingLot3[1])
-        bigParkingLot[7].addAll(listOf(Parking(), Parking()))
-        bigParkingLot[7].addAll(parkingLot2[1])
+        for (i in 0..7) bigParkingLot.add(mutableListOf())
+
+        // Setup some lanes
+        val parkingLane1 = Parking.getEmptyParkingLane(4)
+        parkingLane1[0][0].car = Car.RED
+        parkingLane1[0][2].car = Car.AZURE
+        parkingLane1[1][1].car = Car.YELLOW
+        parkingLane1[1][2].car = Car.BROWN
+        val parkingLane2 = Parking.getEmptyParkingLane(3)
+        val parkingLane3 = Parking.getEmptyParkingLane(4)
+        parkingLane3[0][1].car = Car.GREEN
+        parkingLane3[0][3].car = Car.BLUE
+        val parkingLane4 = Parking.getEmptyParkingLane(4)
+
+        // Setup the parking lot
+        bigParkingLot[0].apply {
+            val list1 = parkingLane1[0]
+            val list2 = parkingLane2[0]
+            addAll(list1)
+            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH-list1.size-list2.size))
+            addAll(list2)
+        }
+        bigParkingLot[1].apply {
+            val list1 = parkingLane1[1]
+            val list2 = parkingLane2[1]
+            addAll(list1)
+            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH-list1.size-list2.size))
+            addAll(list2)
+        }
+        bigParkingLot[2].apply{
+            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH))
+        }
+        bigParkingLot[3].apply {
+            val list = parkingLane3[0]
+            addAll(list)
+            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH-list.size))
+        }
+        bigParkingLot[4].apply {
+            val list = parkingLane3[1]
+            addAll(list)
+            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH-list.size))
+        }
+        bigParkingLot[5].apply {
+            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH))
+        }
+        bigParkingLot[6].apply {
+            val list1 = parkingLane4[0]
+            val list2 = parkingLane2[0]
+            addAll(list1)
+            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH-list1.size-list2.size))
+            addAll(list2)
+        }
+        bigParkingLot[7].apply {
+            val list1 = parkingLane4[1]
+            val list2 = parkingLane2[1]
+            addAll(list1)
+            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH-list1.size-list2.size))
+            addAll(list2)
+        }
         return bigParkingLot
     }
 }

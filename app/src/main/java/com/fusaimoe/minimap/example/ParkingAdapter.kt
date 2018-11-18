@@ -2,11 +2,11 @@ package com.fusaimoe.minimap.example
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.fusaimoe.minimap.example.data.Parking
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_parking.*
+import kotlinx.android.synthetic.main.item_parking.view.*
 
 class ParkingAdapter(private val items: List<Parking>) : RecyclerView.Adapter<ParkingAdapter.ViewHolder>() {
 
@@ -16,13 +16,17 @@ class ParkingAdapter(private val items: List<Parking>) : RecyclerView.Adapter<Pa
 
     override fun getItemCount() = items.size
 
+    override fun getItemId(position: Int) = position.toLong()
+
+    override fun getItemViewType(position: Int) = position
+
     inner class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-        fun bind(parking: Parking) {
+        fun bind(parking: Parking){
 
             parking.space?.let {
-                val spaceDrawable = ContextCompat.getDrawable(containerView.context, it.image)
-                spaceDrawable?.mirror(it.mirrorVertical, it.mirrorHorizontal)
-                imageSpace.setImageDrawable(spaceDrawable)
+                imageSpace.setImageResource(it.image)
+                if (it.mirrorHorizontal) imageSpace.scaleX = -1f
+                if (it.mirrorVertical) imageSpace.scaleY = -1f
             }
 
             parking.car?.let {

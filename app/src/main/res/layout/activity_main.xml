@@ -8,7 +8,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
+            android:padding="@dimen/parking_margin"
+            android:clipToPadding="false"
             android:layout_width="match_parent"
+            android:background="@color/colorBackground"
             android:layout_height="match_parent"/>
 
     <com.fusaimoe.minimap.MinimapView

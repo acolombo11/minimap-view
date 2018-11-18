@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="activity_margin">16dp</dimen>
+    <dimen name="parking_margin">32dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 </resources>
