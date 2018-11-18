@@ -16,20 +16,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        
+
         val layoutManager = FixedGridLayoutManager().apply { setTotalColumnCount(PARKING_LOT_WIDTH) }
         val adapter = ParkingAdapter(getExampleParkingLot().flatten())
 
         recyclerView.layoutManager = layoutManager
-        recyclerView.minimap = minimapView
         recyclerView.adapter = adapter
+
+        recyclerView.minimap = minimapView
     }
 
     private fun getExampleParkingLot(): List<List<Parking>> {
-
         // Init the parking lot
-        val bigParkingLot : MutableList<MutableList<Parking>> = mutableListOf()
-        for (i in 0..7) bigParkingLot.add(mutableListOf())
+        val bigParkingLot = mutableListOf<MutableList<Parking>>().apply {
+            for (i in 0..7) add(mutableListOf())
+        }
 
         // Setup some lanes
         val parkingLane1 = Parking.getEmptyParkingLane(4)
@@ -48,28 +49,28 @@ class MainActivity : AppCompatActivity() {
             val list1 = parkingLane1[0]
             val list2 = parkingLane2[0]
             addAll(list1)
-            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH-list1.size-list2.size))
+            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH - list1.size - list2.size))
             addAll(list2)
         }
         bigParkingLot[1].apply {
             val list1 = parkingLane1[1]
             val list2 = parkingLane2[1]
             addAll(list1)
-            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH-list1.size-list2.size))
+            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH - list1.size - list2.size))
             addAll(list2)
         }
-        bigParkingLot[2].apply{
+        bigParkingLot[2].apply {
             addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH))
         }
         bigParkingLot[3].apply {
             val list = parkingLane3[0]
             addAll(list)
-            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH-list.size))
+            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH - list.size))
         }
         bigParkingLot[4].apply {
             val list = parkingLane3[1]
             addAll(list)
-            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH-list.size))
+            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH - list.size))
         }
         bigParkingLot[5].apply {
             addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH))
@@ -78,14 +79,14 @@ class MainActivity : AppCompatActivity() {
             val list1 = parkingLane4[0]
             val list2 = parkingLane2[0]
             addAll(list1)
-            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH-list1.size-list2.size))
+            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH - list1.size - list2.size))
             addAll(list2)
         }
         bigParkingLot[7].apply {
             val list1 = parkingLane4[1]
             val list2 = parkingLane2[1]
             addAll(list1)
-            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH-list1.size-list2.size))
+            addAll(Parking.getEmptyRoad(PARKING_LOT_WIDTH - list1.size - list2.size))
             addAll(list2)
         }
         return bigParkingLot
