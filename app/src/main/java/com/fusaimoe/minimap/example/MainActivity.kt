@@ -20,9 +20,9 @@ class MainActivity : AppCompatActivity() {
         val layoutManager = FixedGridLayoutManager().apply { setTotalColumnCount(PARKING_LOT_WIDTH) }
         val adapter = ParkingAdapter(getExampleParkingLot().flatten())
 
+        recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
-
         recyclerView.minimap = minimapView
     }
 
