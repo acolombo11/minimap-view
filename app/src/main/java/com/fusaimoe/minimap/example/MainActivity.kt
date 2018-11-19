@@ -1,6 +1,7 @@
 package com.fusaimoe.minimap.example
 
 import android.os.Bundle
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.fusaimoe.minimap.MinimapView.Companion.minimap
 import com.fusaimoe.minimap.example.data.Car
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
         recyclerView.minimap = minimapView
+
     }
 
     private fun getExampleParkingLot(): List<List<Parking>> {

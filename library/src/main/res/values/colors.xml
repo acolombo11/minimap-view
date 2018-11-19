@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorDefaultIndicator">#000000</color>
-    <color name="colorDefaultBackground">#40eeeeee</color>
+    <color name="colorDefaultIndicator">#fff</color>
+    <color name="colorDefaultBackground">#40455a64</color>
 </resources>

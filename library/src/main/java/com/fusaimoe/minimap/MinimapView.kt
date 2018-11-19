@@ -51,16 +51,11 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     // TODO Do the same for ScrollView
     fun setRecyclerView(recyclerView: RecyclerView) {
-        updateScaleFactor(recyclerView)
-
-        invalidate()
-
-        recyclerView.addScrollListener { dx, dy ->
-            if (isVisible) moveIndicator(dx, dy)
-        }
-
-        recyclerView.addLayoutChangeListener {
-            updateScaleFactor(recyclerView)
+        // Wait for recyclerView to be measured before doing anything with the minimap
+        recyclerView.afterMeasured {
+            updateScaleFactor(this)
+            addScrollListener { dx, dy -> if (isVisible) moveIndicator(dx, dy) }
+            addLayoutChangeListener { updateScaleFactor(this) }
         }
     }
 
@@ -68,25 +63,31 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         scrollWidth = recyclerView.computeHorizontalScrollRange().toFloat()
         scrollHeight = recyclerView.computeVerticalScrollRange().toFloat()
 
-        updateVisibility(recyclerView)
+        recyclerView.updateVisibility()
         if (isVisible) {
 
             // Scrollable height might be < than the scrollable width while scrollable width being < than total height of the RecyclerView
-            val biggerWidth = maxOf(scrollWidth, recyclerView.width.toFloat())
-            val biggerHeight = maxOf(scrollHeight, recyclerView.height.toFloat())
+            val biggerWidth =
+                maxOf(scrollWidth, recyclerView.width.toFloat()) + recyclerView.paddingRight + recyclerView.paddingLeft
+            val biggerHeight = maxOf(
+                scrollHeight,
+                recyclerView.height.toFloat()
+            ) + recyclerView.paddingTop + recyclerView.paddingBottom
 
             // So, when calculating scaleFactor, we need the bigger size to fit into the maxSize of the view
             scaleFactor = when {
-                biggerWidth > biggerHeight -> {
-                    biggerWidth / if (totalWidth != 0f) minOf(maxSize, totalWidth) else maxSize
-                }
-                biggerWidth < biggerHeight -> {
-                    biggerHeight / if (totalHeight != 0f) minOf(maxSize, totalHeight) else maxSize
-                }
+                biggerWidth > biggerHeight -> biggerWidth / if (totalWidth != 0f) minOf(
+                    maxSize,
+                    totalWidth
+                ) else maxSize
+                biggerWidth < biggerHeight -> biggerHeight / if (totalHeight != 0f) minOf(
+                    maxSize,
+                    totalHeight
+                ) else maxSize
                 else -> scrollWidth / maxSize
             }
 
-            // TODO Make it possible to choose a desired width or height which stays the same, instead of just one mazSize to stay inside of
+            // TODO Make it possible to choose a maxWidth or maxHeight, instead of just one mazSize to stay inside of
             totalWidth = biggerWidth / scaleFactor
             totalHeight = biggerHeight / scaleFactor
 
@@ -99,9 +100,9 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         }
     }
 
-    private fun updateVisibility(recyclerView: RecyclerView) = if (shouldBeVisible(recyclerView)) {
-        visibility = recyclerView.visibility
-        isVisible = recyclerView.visibility == View.VISIBLE
+    private fun View.updateVisibility() = if (this.shouldBeVisible()) {
+        visibility = this.visibility
+        isVisible = this.visibility == View.VISIBLE
         true
     } else {
         visibility = View.GONE
@@ -109,8 +110,7 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         false
     }
 
-    private fun shouldBeVisible(recyclerView: RecyclerView?) =
-        recyclerView != null && (scrollWidth > recyclerView.width || scrollHeight > recyclerView.height)
+    private fun View?.shouldBeVisible() = this != null && (scrollWidth > this.width || scrollHeight > this.height)
 
     private fun moveIndicator(dx: Int, dy: Int) = if (scaleFactor != 0f) {
         indicatorX += dx / scaleFactor
