@@ -1,11 +1,12 @@
 package com.fusaimoe.minimap
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
@@ -17,43 +18,51 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
             set(value) = value.setRecyclerView(this@minimap)
     }
 
-    // Default Sizes
-    // TODO Make these values customizable by xml
-    private var maxSize = resources.getDimension(R.dimen.minimap_size)
-    private var borderWidth = resources.getDimension(R.dimen.minimap_border_width)
-    private var cornerRadius = resources.getDimension(R.dimen.minimap_corner_radius)
+    private val a: TypedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MinimapView)
 
-    // Custom Sizes
+    var maxSize = a.getDimension(R.styleable.MinimapView_minimapMaxSize, 0f)
+    var borderWidth = a.getDimension(R.styleable.MinimapView_minimapBorderWidth, 0f)
+    var cornerRadius = a.getDimension(R.styleable.MinimapView_minimapCornerRadius, 0f)
+    var mapBackgroundColor = a.getColor(R.styleable.MinimapView_minimapBackgroundColor, Color.GRAY)
+    var indicatorColor = a.getColor(R.styleable.MinimapView_minimapIndicatorColor, Color.WHITE)
+
+    init {
+        a.recycle()
+    }
+
+    // Calculated sizes
     private var scaleFactor = 0f
     private var scrollWidth = 0f
     private var scrollHeight = 0f
-
     private var calculatedWidth = 0f
     private var calculatedHeight = 0f
     private var indicatorWidth = 0f
     private var indicatorHeight = 0f
+
+    // Calculated positions
     private var indicatorX = 0f
     private var indicatorY = 0f
 
     // Custom default paints
     private val backgroundPaint = Paint().apply {
         style = Paint.Style.FILL
-        color = ContextCompat.getColor(context, R.color.colorDefaultBackground)
+        color = mapBackgroundColor
         isAntiAlias = true
     }
     private val indicatorPaint = Paint().apply {
         style = Paint.Style.STROKE
-        color = ContextCompat.getColor(context, R.color.colorDefaultIndicator)
+        color = indicatorColor
         strokeCap = Paint.Cap.ROUND
         strokeWidth = borderWidth
     }
 
-    // TODO Do the same for ScrollView
     fun setRecyclerView(recyclerView: RecyclerView) {
         // Wait for recyclerView to be measured before doing anything with the minimap
         recyclerView.addLayoutChangeListenerHandler { updateScaleFactor(this) }
 
-        recyclerView.addScrollListener { dx, dy -> if (this@MinimapView.visibility == View.VISIBLE) moveIndicator(dx, dy) }
+        recyclerView.addScrollListener { dx, dy ->
+            if (this@MinimapView.visibility == View.VISIBLE) moveIndicator(dx, dy)
+        }
     }
 
     private fun updateScaleFactor(rv: RecyclerView) {
@@ -79,8 +88,6 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
                     calculatedWidth = biggerWidth / scaleFactor
                 }
             }
-
-            // TODO Make it possible to choose a maxWidth or maxHeight, instead of just one mazSize to stay inside of
 
             if (scaleFactor != 0f) {
                 indicatorWidth = rv.width / scaleFactor
@@ -153,16 +160,10 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
-        val heightMode = View.MeasureSpec.getMode(heightMeasureSpec)
-        val widthSize = View.MeasureSpec.getSize(widthMeasureSpec)
-        val heightSize = View.MeasureSpec.getSize(heightMeasureSpec)
-
-        // TODO Check how everything is working with exact size
-        val width = if (widthMode == View.MeasureSpec.EXACTLY) widthSize.toFloat() else calculatedWidth
-        val height = if (heightMode == View.MeasureSpec.EXACTLY) heightSize.toFloat() else calculatedHeight
-
-        setMeasuredDimension(width.toInt() + borderWidth.toInt(), height.toInt() + borderWidth.toInt())
+        setMeasuredDimension(
+            calculatedWidth.toInt() + borderWidth.toInt(),
+            calculatedHeight.toInt() + borderWidth.toInt()
+        )
     }
 
 }

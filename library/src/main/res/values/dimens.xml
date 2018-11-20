@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="minimap_size">160dp</dimen>
-    <dimen name="minimap_border_width">3dp</dimen>
-    <dimen name="minimap_corner_radius">5dp</dimen>
-</resources>

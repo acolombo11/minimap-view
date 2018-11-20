@@ -5,5 +5,6 @@
     <color name="colorAccent">#81c784</color>
 
     <color name="colorBackground">#d1d9d9</color>
+    <color name="colorMinimap">#40455a64</color>
     <color name="colorLines">#ffffff</color>
 </resources>

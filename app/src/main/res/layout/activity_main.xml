@@ -26,9 +26,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="@dimen/activity_margin"
-            tools:background="@color/colorDefaultBackground"
-            tools:layout_height="@dimen/minimap_size"
-            tools:layout_width="@dimen/minimap_size" />
+            app:minimapBackgroundColor="@color/colorMinimap"
+            app:minimapBorderWidth="3dp"
+            app:minimapCornerRadius="5dp"
+            app:minimapMaxSize="160dp"
+            tools:layout_height="160dp"
+            tools:layout_width="160dp" />
     </FrameLayout>
 
     <FrameLayout

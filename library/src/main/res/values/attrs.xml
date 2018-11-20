@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MinimapView">
+
+        <attr name="minimapMaxSize" format="dimension|reference" />
+        <attr name="minimapBorderWidth" format="dimension|reference" />
+        <attr name="minimapCornerRadius" format="dimension|reference" />
+
+        <attr name="minimapBackgroundColor" format="color|reference" />
+        <attr name="minimapIndicatorColor" format="color|reference" />
+
+    </declare-styleable>
+</resources>
