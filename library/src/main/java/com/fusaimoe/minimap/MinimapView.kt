@@ -69,18 +69,19 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
             // Scrollable height might be < than the scrollable width while scrollable width being < than total height of the RecyclerView
             val biggerWidth = maxOf(scrollWidth, rv.width.toFloat()) + rv.paddingRight + rv.paddingLeft
             val biggerHeight = maxOf(scrollHeight, rv.height.toFloat()) + rv.paddingTop + rv.paddingBottom
-            val smallerWidth = if (totalWidth != 0f) minOf(maxSize, totalWidth) else maxSize
-            val smallerHeight = if (totalHeight != 0f) minOf(maxSize, totalHeight) else maxSize
+            val smallerWidth = if (maxSize > totalWidth && totalWidth != 0f) totalWidth else maxSize
+            val smallerHeight = if (maxSize > totalHeight && totalHeight != 0f) totalHeight else maxSize
 
             // So, when calculating scaleFactor, we need the bigger size to fit into the maxSize of the view
             scaleFactor = when {
                 biggerWidth > biggerHeight -> biggerWidth / smallerWidth
                 biggerWidth < biggerHeight -> biggerHeight / smallerHeight
-                else -> biggerWidth / maxSize
+                else  -> biggerWidth / smallerWidth
             }
 
             totalWidth = biggerWidth / scaleFactor
             totalHeight = biggerHeight / scaleFactor
+            
             // TODO Make it possible to choose a maxWidth or maxHeight, instead of just one mazSize to stay inside of
 
             if (scaleFactor != 0f) {
@@ -162,8 +163,10 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         val heightSize = View.MeasureSpec.getSize(heightMeasureSpec)
 
         // TODO Check how everything is working with exact size
-        val width = if (widthMode == View.MeasureSpec.EXACTLY) widthSize.toFloat() else minOf(maxSize, totalWidth)
-        val height = if (heightMode == View.MeasureSpec.EXACTLY) heightSize.toFloat() else minOf(maxSize, totalHeight)
+        val width =
+            if (widthMode == View.MeasureSpec.EXACTLY) widthSize.toFloat() else if (totalWidth > maxSize) maxSize else totalWidth
+        val height =
+            if (heightMode == View.MeasureSpec.EXACTLY) heightSize.toFloat() else if (totalHeight > maxSize) maxSize else totalHeight
 
         setMeasuredDimension(width.toInt() + borderWidth.toInt(), height.toInt() + borderWidth.toInt())
     }
