@@ -1,8 +1,10 @@
 package com.fusaimoe.minimap
 
+import android.os.Handler
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.RecyclerView
+
 
 fun RecyclerView.addScrollListener(func: (dx: Int, dy: Int) -> Unit) {
     this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -11,6 +13,15 @@ fun RecyclerView.addScrollListener(func: (dx: Int, dy: Int) -> Unit) {
             func(dx, dy)
         }
     })
+}
+
+fun <T: View> T.addLayoutChangeListenerHandler(func: T.() -> Unit) {
+    this.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+        Handler().post {
+            func()
+        }
+
+    }
 }
 
 fun <T: View> T.addLayoutChangeListener(func: T.() -> Unit) {

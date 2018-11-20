@@ -17,8 +17,6 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
             set(value) = value.setRecyclerView(this@minimap)
     }
 
-    private var isVisible = false
-
     // Default Sizes
     // TODO Make these values customizable by xml
     private var maxSize = resources.getDimension(R.dimen.minimap_size)
@@ -29,8 +27,9 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private var scaleFactor = 0f
     private var scrollWidth = 0f
     private var scrollHeight = 0f
-    private var totalWidth = 0f
-    private var totalHeight = 0f
+
+    private var calculatedWidth = 0f
+    private var calculatedHeight = 0f
     private var indicatorWidth = 0f
     private var indicatorHeight = 0f
     private var indicatorX = 0f
@@ -52,36 +51,35 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     // TODO Do the same for ScrollView
     fun setRecyclerView(recyclerView: RecyclerView) {
         // Wait for recyclerView to be measured before doing anything with the minimap
-        recyclerView.afterMeasured {
-            updateScaleFactor(this)
-            addScrollListener { dx, dy -> if (isVisible) moveIndicator(dx, dy) }
-            addLayoutChangeListener { updateScaleFactor(this) }
-        }
+        recyclerView.addLayoutChangeListenerHandler { updateScaleFactor(this) }
+
+        recyclerView.addScrollListener { dx, dy -> if (this@MinimapView.visibility == View.VISIBLE) moveIndicator(dx, dy) }
     }
 
     private fun updateScaleFactor(rv: RecyclerView) {
         scrollWidth = rv.computeHorizontalScrollRange().toFloat()
         scrollHeight = rv.computeVerticalScrollRange().toFloat()
 
-        rv.updateVisibility()
-        if (isVisible) {
+        if (rv.updateVisibility()) {
 
             // Scrollable height might be < than the scrollable width while scrollable width being < than total height of the RecyclerView
             val biggerWidth = maxOf(scrollWidth, rv.width.toFloat()) + rv.paddingRight + rv.paddingLeft
             val biggerHeight = maxOf(scrollHeight, rv.height.toFloat()) + rv.paddingTop + rv.paddingBottom
-            val smallerWidth = if (maxSize > totalWidth && totalWidth != 0f) totalWidth else maxSize
-            val smallerHeight = if (maxSize > totalHeight && totalHeight != 0f) totalHeight else maxSize
 
             // So, when calculating scaleFactor, we need the bigger size to fit into the maxSize of the view
-            scaleFactor = when {
-                biggerWidth > biggerHeight -> biggerWidth / smallerWidth
-                biggerWidth < biggerHeight -> biggerHeight / smallerHeight
-                else  -> biggerWidth / smallerWidth
+            when {
+                biggerWidth >= biggerHeight -> {
+                    scaleFactor = biggerWidth / maxSize
+                    calculatedWidth = maxSize
+                    calculatedHeight = biggerHeight / scaleFactor
+                }
+                biggerWidth < biggerHeight -> {
+                    scaleFactor = biggerHeight / maxSize
+                    calculatedHeight = maxSize
+                    calculatedWidth = biggerWidth / scaleFactor
+                }
             }
 
-            totalWidth = biggerWidth / scaleFactor
-            totalHeight = biggerHeight / scaleFactor
-            
             // TODO Make it possible to choose a maxWidth or maxHeight, instead of just one mazSize to stay inside of
 
             if (scaleFactor != 0f) {
@@ -95,11 +93,9 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     private fun View.updateVisibility() = if (this.shouldBeVisible()) {
         visibility = this.visibility
-        isVisible = this.visibility == View.VISIBLE
-        true
+        this.visibility == View.VISIBLE
     } else {
         visibility = View.GONE
-        isVisible = false
         false
     }
 
@@ -131,11 +127,11 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private fun fixIndicatorPosition() {
         when {
             indicatorX < 0f -> indicatorX = 0f
-            indicatorX > totalWidth - indicatorWidth -> indicatorX = totalWidth - indicatorWidth
+            indicatorX > calculatedWidth - indicatorWidth -> indicatorX = calculatedWidth - indicatorWidth
         }
         when {
             indicatorY < 0f -> indicatorY = 0f
-            indicatorY > totalHeight - indicatorHeight -> indicatorY = totalHeight - indicatorHeight
+            indicatorY > calculatedHeight - indicatorHeight -> indicatorY = calculatedHeight - indicatorHeight
         }
     }
 
@@ -143,8 +139,8 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         canvas?.drawRoundRect(
             0f + borderWidth / 2,
             0f + borderWidth / 2,
-            totalWidth + borderWidth / 2,
-            totalHeight + borderWidth / 2,
+            calculatedWidth + borderWidth / 2,
+            calculatedHeight + borderWidth / 2,
             cornerRadius,
             cornerRadius,
             backgroundPaint
@@ -163,10 +159,8 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         val heightSize = View.MeasureSpec.getSize(heightMeasureSpec)
 
         // TODO Check how everything is working with exact size
-        val width =
-            if (widthMode == View.MeasureSpec.EXACTLY) widthSize.toFloat() else if (totalWidth > maxSize) maxSize else totalWidth
-        val height =
-            if (heightMode == View.MeasureSpec.EXACTLY) heightSize.toFloat() else if (totalHeight > maxSize) maxSize else totalHeight
+        val width = if (widthMode == View.MeasureSpec.EXACTLY) widthSize.toFloat() else calculatedWidth
+        val height = if (heightMode == View.MeasureSpec.EXACTLY) heightSize.toFloat() else calculatedHeight
 
         setMeasuredDimension(width.toInt() + borderWidth.toInt(), height.toInt() + borderWidth.toInt())
     }
