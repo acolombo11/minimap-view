@@ -59,41 +59,33 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         }
     }
 
-    private fun updateScaleFactor(recyclerView: RecyclerView) {
-        scrollWidth = recyclerView.computeHorizontalScrollRange().toFloat()
-        scrollHeight = recyclerView.computeVerticalScrollRange().toFloat()
+    private fun updateScaleFactor(rv: RecyclerView) {
+        scrollWidth = rv.computeHorizontalScrollRange().toFloat()
+        scrollHeight = rv.computeVerticalScrollRange().toFloat()
 
-        recyclerView.updateVisibility()
+        rv.updateVisibility()
         if (isVisible) {
 
             // Scrollable height might be < than the scrollable width while scrollable width being < than total height of the RecyclerView
-            val biggerWidth =
-                maxOf(scrollWidth, recyclerView.width.toFloat()) + recyclerView.paddingRight + recyclerView.paddingLeft
-            val biggerHeight = maxOf(
-                scrollHeight,
-                recyclerView.height.toFloat()
-            ) + recyclerView.paddingTop + recyclerView.paddingBottom
+            val biggerWidth = maxOf(scrollWidth, rv.width.toFloat()) + rv.paddingRight + rv.paddingLeft
+            val biggerHeight = maxOf(scrollHeight, rv.height.toFloat()) + rv.paddingTop + rv.paddingBottom
+            val smallerWidth = if (totalWidth != 0f) minOf(maxSize, totalWidth) else maxSize
+            val smallerHeight = if (totalHeight != 0f) minOf(maxSize, totalHeight) else maxSize
 
             // So, when calculating scaleFactor, we need the bigger size to fit into the maxSize of the view
             scaleFactor = when {
-                biggerWidth > biggerHeight -> biggerWidth / if (totalWidth != 0f) minOf(
-                    maxSize,
-                    totalWidth
-                ) else maxSize
-                biggerWidth < biggerHeight -> biggerHeight / if (totalHeight != 0f) minOf(
-                    maxSize,
-                    totalHeight
-                ) else maxSize
-                else -> scrollWidth / maxSize
+                biggerWidth > biggerHeight -> biggerWidth / smallerWidth
+                biggerWidth < biggerHeight -> biggerHeight / smallerHeight
+                else -> biggerWidth / maxSize
             }
 
-            // TODO Make it possible to choose a maxWidth or maxHeight, instead of just one mazSize to stay inside of
             totalWidth = biggerWidth / scaleFactor
             totalHeight = biggerHeight / scaleFactor
+            // TODO Make it possible to choose a maxWidth or maxHeight, instead of just one mazSize to stay inside of
 
             if (scaleFactor != 0f) {
-                indicatorWidth = recyclerView.width / scaleFactor
-                indicatorHeight = recyclerView.height / scaleFactor
+                indicatorWidth = rv.width / scaleFactor
+                indicatorHeight = rv.height / scaleFactor
             }
 
             requestLayout()
@@ -115,6 +107,7 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private fun moveIndicator(dx: Int, dy: Int) = if (scaleFactor != 0f) {
         indicatorX += dx / scaleFactor
         indicatorY += dy / scaleFactor
+        fixIndicatorPosition()
         invalidate()
         true
     } else {
@@ -122,6 +115,7 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     private fun drawIndicator(canvas: Canvas?) {
+        fixIndicatorPosition()
         canvas?.drawRoundRect(
             indicatorX + borderWidth / 2,
             indicatorY + borderWidth / 2,
@@ -131,6 +125,17 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
             cornerRadius,
             indicatorPaint
         )
+    }
+
+    private fun fixIndicatorPosition() {
+        when {
+            indicatorX < 0f -> indicatorX = 0f
+            indicatorX > totalWidth - indicatorWidth -> indicatorX = totalWidth - indicatorWidth
+        }
+        when {
+            indicatorY < 0f -> indicatorY = 0f
+            indicatorY > totalHeight - indicatorHeight -> indicatorY = totalHeight - indicatorHeight
+        }
     }
 
     private fun drawBackground(canvas: Canvas?) {

@@ -2,6 +2,7 @@ package com.fusaimoe.minimap.example
 
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.fusaimoe.minimap.MinimapView.Companion.minimap
 import com.fusaimoe.minimap.example.data.Car
@@ -19,14 +20,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val layoutManager = FixedGridLayoutManager().apply { setTotalColumnCount(PARKING_LOT_WIDTH) }
-        val adapter = ParkingAdapter(getExampleParkingLot().flatten())
+        val adapter = ParkingAdapter(getExampleParkingLot().flatten().toMutableList())
 
-        recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
         recyclerView.minimap = minimapView
 
+        val handler = Handler()
+        handler.postDelayed({
+            layoutBottom.visibility = View.VISIBLE
+            textAvailability.text = getString(R.string.parking_availability, getEmptyParkingSpacesQuantity(adapter.items))
+            handler.postDelayed({
+                adapter.removeLastRow()
+                textAvailability.text = getString(R.string.parking_availability, getEmptyParkingSpacesQuantity(adapter.items))
+            }, 5000)
+        }, 5000)
+
     }
+
+    private fun getEmptyParkingSpacesQuantity(items: MutableList<Parking>) = items.filter { it.space != null && it.car == null }.size
 
     private fun getExampleParkingLot(): List<List<Parking>> {
         // Init the parking lot
@@ -93,4 +105,6 @@ class MainActivity : AppCompatActivity() {
         }
         return bigParkingLot
     }
+
+
 }

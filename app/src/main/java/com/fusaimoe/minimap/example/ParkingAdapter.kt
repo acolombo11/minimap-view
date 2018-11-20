@@ -8,7 +8,7 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_parking.*
 import kotlinx.android.synthetic.main.item_parking.view.*
 
-class ParkingAdapter(private val items: List<Parking>) : RecyclerView.Adapter<ParkingAdapter.ViewHolder>() {
+class ParkingAdapter(val items: MutableList<Parking>) : RecyclerView.Adapter<ParkingAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(parent.inflate(R.layout.item_parking))
 
@@ -34,5 +34,10 @@ class ParkingAdapter(private val items: List<Parking>) : RecyclerView.Adapter<Pa
             }
         }
 
+    }
+
+    fun removeLastRow(){
+        for (i in 0..28) items.removeAt(items.size-1)
+        notifyDataSetChanged()
     }
 }

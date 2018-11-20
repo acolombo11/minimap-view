@@ -1,25 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:weightSum="1"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <androidx.recyclerview.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:padding="@dimen/parking_margin"
-            android:clipToPadding="false"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@color/colorBackground"
-            android:layout_height="match_parent"/>
+            android:clipToPadding="false"
+            android:padding="@dimen/parking_margin" />
 
-    <com.fusaimoe.minimap.MinimapView
+        <com.fusaimoe.minimap.MinimapView
             android:id="@+id/minimapView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="@dimen/activity_margin"/>
+            android:layout_gravity="end|bottom"
+            android:layout_margin="@dimen/activity_margin"
+            tools:background="@color/colorDefaultBackground"
+            tools:layout_height="@dimen/minimap_size"
+            tools:layout_width="@dimen/minimap_size" />
+    </FrameLayout>
 
-</RelativeLayout>
+    <FrameLayout
+        android:id="@+id/layoutBottom"
+        android:layout_weight="0"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/textAvailability"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="32dp"
+            android:text="@string/parking_availability"/>
+    </FrameLayout>
+
+</LinearLayout>
