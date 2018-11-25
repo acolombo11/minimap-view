@@ -1,15 +1,14 @@
 # minimap-view
 
-Miniature map view, usually placed in the corner of the screen, to help the user in orientig himself in a screen with a big Recycler View
+A minimap view library for Android. The miniature map is usually placed in the corner of the screen, to help the user in orientig himself in a screen with a big Recycler View. Check the example by cloning the repo and starting the example app.
+
+## Screenshots
 
 ## How to use
-### AndroidX dependecies
-The library is split up into core, commons, and extensions. The core functions are included in the following dependency:
+The library use androidX dependencies, if you do too use this
 ```
 implementation 'eu.acolombo:minimap:1.0.0'
 ```
-
-### Support dependencies
 If you still use support libraries and have not transitioned yet to Android X, I got you covered:
 ```
 implementation 'eu.acolombo:minimap-support:1.0.0'
