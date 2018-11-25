@@ -4,8 +4,8 @@ A minimap view library for Android. The miniature map is usually placed in the c
 
 ## Screenshots
 
-## How to use
-The library use androidX dependencies, if you do too use this
+## Download
+The library use androidX dependencies, if you do too, use this:
 ```
 implementation 'eu.acolombo:minimap:1.0.0'
 ```
@@ -29,11 +29,14 @@ Add the minimap in your layout customizing the properties you want:
 ```
 Then add it to your Recycler view in this way:
 ```
+import com.fusaimoe.minimap.MinimapView.Companion.minimap
+
 recyclerView.minimap(minimapView)
 ```
-If the minimap extension method is not found, add this in your imports:
+Or, if you're using Java, do it this way:
 ```
-import com.fusaimoe.minimap.MinimapView.Companion.minimap
+MinimapView minimapView = findViewById(R.id.minimapView)
+minimapView.setRecyclerView(recyclerView)
 ```
 
 ## Docs
@@ -42,3 +45,7 @@ import com.fusaimoe.minimap.MinimapView.Companion.minimap
 ### Credits
 - [Devunwired's FixedGridLayoutManager](https://github.com/devunwired/recyclerview-playground) - Layout Manager used in the example
 - [Freepik's Car Vector](https://www.freepik.com/free-vector/top-view-of-flat-cars-on-parking-lot_1349624.htm) - Vector graphics used in the example
+
+### Projects using minimap-view
+- [mywellness](https://play.google.com/store/apps/details?id=com.technogym.mywellness) - [Screenshot]()
+- [my-virgin-active](https://play.google.com/store/apps/details?id=it.virginactive.android) - [Screenshot]()
