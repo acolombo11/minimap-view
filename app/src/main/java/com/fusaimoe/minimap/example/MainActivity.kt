@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             }
         } else if (removedLines < 4) {
             for (i in 0..2) {
-                for (i in 0 until PARKING_LOT_WIDTH) adapter.items.add(Parking())
+                for (j in 0 until PARKING_LOT_WIDTH) adapter.items.add(Parking())
             }
         }
         adapter.notifyDataSetChanged()

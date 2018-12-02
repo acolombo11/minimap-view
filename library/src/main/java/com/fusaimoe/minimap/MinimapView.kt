@@ -72,8 +72,8 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         if (rv.updateVisibility()) {
 
             // Scrollable height might be < than the scrollable width while scrollable width being < than total height of the RecyclerView
-            val biggerWidth = maxOf(scrollWidth, rv.width.toFloat()) + rv.paddingRight + rv.paddingLeft
-            val biggerHeight = maxOf(scrollHeight, rv.height.toFloat()) + rv.paddingTop + rv.paddingBottom
+            val biggerWidth = maxOf(scrollWidth, rv.width.toFloat()) // + rv.paddingRight + rv.paddingLeft
+            val biggerHeight = maxOf(scrollHeight, rv.height.toFloat()) //+ rv.paddingTop + rv.paddingBottom
 
             // So, when calculating scaleFactor, we need the bigger size to fit into the maxSize of the view
             when {
@@ -132,13 +132,16 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     private fun fixIndicatorPosition() {
+        val maxHorizontalPosition = calculatedWidth - indicatorWidth
         when {
             indicatorX < 0f -> indicatorX = 0f
-            indicatorX > calculatedWidth - indicatorWidth -> indicatorX = calculatedWidth - indicatorWidth
+            indicatorX > maxHorizontalPosition -> indicatorX = maxHorizontalPosition
         }
+
+        val maxVerticalPosition = calculatedHeight - indicatorHeight
         when {
             indicatorY < 0f -> indicatorY = 0f
-            indicatorY > calculatedHeight - indicatorHeight -> indicatorY = calculatedHeight - indicatorHeight
+            indicatorY > maxVerticalPosition -> indicatorY = maxVerticalPosition
         }
     }
 

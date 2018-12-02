@@ -18,7 +18,8 @@
             android:layout_height="match_parent"
             android:background="@color/colorBackground"
             android:clipToPadding="false"
-            android:padding="@dimen/parking_margin" />
+            android:padding="@dimen/parking_margin"
+            app:fastScrollEnabled="false" />
 
         <com.fusaimoe.minimap.MinimapView
             android:id="@+id/minimapView"
@@ -48,18 +49,18 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:maxLines="2"
             android:layout_toStartOf="@+id/buttonLastLine"
+            android:maxLines="2"
             android:text="@string/parking_availability" />
 
         <Button
             android:id="@+id/buttonLastLine"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:text="@string/toggle_last_line"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
+            android:text="@string/toggle_last_line" />
 
     </RelativeLayout>
 
