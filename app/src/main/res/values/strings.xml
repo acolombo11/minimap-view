@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Minimap Example</string>
     <string name="parking_availability">Parking Availability: %d empty spots</string>
+    <string name="toggle_last_line">Toggle</string>
 </resources>

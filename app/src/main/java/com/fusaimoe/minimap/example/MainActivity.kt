@@ -1,7 +1,6 @@
 package com.fusaimoe.minimap.example
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.fusaimoe.minimap.MinimapView.Companion.minimap
@@ -12,33 +11,57 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        private const val PARKING_LOT_WIDTH = 9
+        const val PARKING_LOT_WIDTH = 9
     }
+
+    private var removedLines = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val layoutManager = FixedGridLayoutManager().apply { setTotalColumnCount(PARKING_LOT_WIDTH) }
-        val adapter = ParkingAdapter(getExampleParkingLot().flatten().toMutableList())
+        val adapter = ParkingAdapter(
+            getExampleParkingLot().flatten().toMutableList(),
+            object : ParkingAdapter.ParkingInteractionListener {
+                override fun onParkingCountChange(count: Int) {
+                    updateCounter(count)
+                }
+            })
 
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
         recyclerView.minimap = minimapView
 
-        val handler = Handler()
-        handler.postDelayed({
-            layoutBottom.visibility = View.VISIBLE
-            textAvailability.text = getString(R.string.parking_availability, getEmptyParkingSpacesQuantity(adapter.items))
-            handler.postDelayed({
-                adapter.removeLastRow()
-                textAvailability.text = getString(R.string.parking_availability, getEmptyParkingSpacesQuantity(adapter.items))
-            }, 5000)
-        }, 5000)
+        updateCounter(adapter.emptyParkingSpots)
+        minimapView.setOnClickListener {
+            layoutBottom.visibility = if (layoutBottom.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        }
+        buttonLastLine.setOnClickListener {
+            toggleLastLines(adapter)
+        }
 
     }
 
-    private fun getEmptyParkingSpacesQuantity(items: MutableList<Parking>) = items.filter { it.space != null && it.car == null }.size
+    private fun toggleLastLines(adapter: ParkingAdapter) {
+        if (removedLines < 2) {
+            for (i in 0..2) {
+                for (j in 0 until PARKING_LOT_WIDTH) adapter.items.removeAt(adapter.items.size - 1)
+            }
+        } else if (removedLines < 4) {
+            for (i in 0..2) {
+                for (i in 0 until PARKING_LOT_WIDTH) adapter.items.add(Parking())
+            }
+        }
+        adapter.notifyDataSetChanged()
+        updateCounter(adapter.emptyParkingSpots)
+        removedLines++
+        if (removedLines == 4) removedLines = 0
+    }
+
+    private fun updateCounter(count: Int) {
+        textAvailability.text = getString(R.string.parking_availability, count)
+    }
 
     private fun getExampleParkingLot(): List<List<Parking>> {
         // Init the parking lot
