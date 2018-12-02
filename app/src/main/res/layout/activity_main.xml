@@ -18,8 +18,7 @@
             android:layout_height="match_parent"
             android:background="@color/colorBackground"
             android:clipToPadding="false"
-            android:padding="@dimen/parking_margin"
-            app:fastScrollEnabled="false" />
+            android:padding="@dimen/parking_margin" />
 
         <com.fusaimoe.minimap.MinimapView
             android:id="@+id/minimapView"

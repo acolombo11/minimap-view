@@ -58,7 +58,9 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     fun setRecyclerView(recyclerView: RecyclerView) {
         // Wait for recyclerView to be measured before doing anything with the minimap
-        recyclerView.addLayoutChangeListenerHandler { updateScaleFactor(this) }
+        recyclerView.addLayoutChangeListenerHandler {
+            updateScaleFactor(this)
+        }
 
         recyclerView.addScrollListener { dx, dy ->
             if (this@MinimapView.visibility == View.VISIBLE) moveIndicator(dx, dy)
