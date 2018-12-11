@@ -6,11 +6,19 @@ import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.RecyclerView
 
 
-fun RecyclerView.addScrollListener(func: (dx: Int, dy: Int) -> Unit) {
+fun RecyclerView.addScrollListener(func: (dx: Int, dy: Int, fling: Boolean) -> Unit) {
+
+    var isSettlingByItself = false
+
     this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            func(dx, dy)
+            func(dx, dy, isSettlingByItself)
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            isSettlingByItself = newState == RecyclerView.SCROLL_STATE_SETTLING
         }
     })
 }

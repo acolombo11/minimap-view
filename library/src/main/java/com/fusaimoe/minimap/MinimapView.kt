@@ -62,8 +62,8 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
             updateScaleFactor(this)
         }
 
-        recyclerView.addScrollListener { dx, dy ->
-            if (this@MinimapView.visibility == View.VISIBLE) moveIndicator(dx, dy)
+        recyclerView.addScrollListener { dx, dy, isSettlingByItself ->
+            if (this@MinimapView.visibility == View.VISIBLE) moveIndicator(dx, dy, isSettlingByItself)
         }
     }
 
@@ -110,9 +110,19 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     private fun View?.shouldBeVisible() = this != null && (scrollWidth > this.width || scrollHeight > this.height)
 
-    private fun moveIndicator(dx: Int, dy: Int) = if (scaleFactor != 0f) {
-        indicatorX += dx / scaleFactor
-        indicatorY += dy / scaleFactor
+    private var settlingDx = 0.0
+    private var settlingDy = 0.0
+    private fun moveIndicator(dx: Int, dy: Int, isSettling: Boolean) = if (scaleFactor != 0f) {
+        // TODO make this avoidBouncing feature default value as true, don't check this stopMoving if it's false
+        // If the scrolling is settling, and the d sign is different than the previous value settlingD, the scrolling changed direction out of the user control, so don't move
+        val stopMovingX = isSettling && (settlingDx<0 == dx<0 || settlingDx>0 == dx>0)
+        val stopMovingY = isSettling && (settlingDy<0 == dy<0 || settlingDy>0 == dy>0)
+        if (!stopMovingX) indicatorX += dx / scaleFactor
+        if (!stopMovingY) indicatorY += dy / scaleFactor
+        if (isSettling) { // Updating settlingX and settlingY signs
+            settlingDx = dx.toDouble()
+            settlingDy = dy.toDouble()
+        }
         fixIndicatorPosition()
         invalidate()
         true
