@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import kotlin.math.sign
 
 class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     View(context, attrs, defStyleAttr) {
@@ -115,8 +116,8 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private fun moveIndicator(dx: Int, dy: Int, isSettling: Boolean) = if (scaleFactor != 0f) {
         // TODO make this avoidBouncing feature default value as true, don't check this stopMoving if it's false
         // If the scrolling is settling, and the d sign is different than the previous value settlingD, the scrolling changed direction out of the user control, so don't move
-        val stopMovingX = isSettling && (settlingDx<0 == dx<0 || settlingDx>0 == dx>0)
-        val stopMovingY = isSettling && (settlingDy<0 == dy<0 || settlingDy>0 == dy>0)
+        val stopMovingX = isSettling && sign(settlingDx) != sign(dx.toDouble())
+        val stopMovingY = isSettling && sign(settlingDy) != sign(dy.toDouble())
         if (!stopMovingX) indicatorX += dx / scaleFactor
         if (!stopMovingY) indicatorY += dy / scaleFactor
         if (isSettling) { // Updating settlingX and settlingY signs
