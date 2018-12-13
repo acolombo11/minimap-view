@@ -20,7 +20,7 @@
             android:clipToPadding="false"
             android:padding="@dimen/parking_margin" />
 
-        <com.fusaimoe.minimap.MinimapView
+        <eu.acolombo.minimap.MinimapView
             android:id="@+id/minimapView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
+        android:visibility="gone"
         android:padding="32dp">
 
         <TextView
