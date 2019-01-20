@@ -1,10 +1,10 @@
 # minimap-view
 
-A minimap view library for Android. The miniature map is usually placed in the corner of the screen, to help the user in orientig himself in a screen with a big Recycler View. Check the example by cloning the repo and starting the example app.
+A minimap view library for Android. The miniature map is usually placed in the corner of the screen, to help the user in orienting himself in a screen with a big Recycler View. Check the example by cloning the repo and starting the example app.
 
 ## Screenshots
 
-Example app (parking lot) showind different scenarios and sizes:
+Example app (parking lot) showing different scenarios and sizes:
 
 ![big parking lot](docs/screenshots/Screenshot_20181212-231326.png)
 ![small parking lot](docs/screenshots/Screenshot_20181212-231340.png)
