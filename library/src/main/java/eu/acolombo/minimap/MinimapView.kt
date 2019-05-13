@@ -12,12 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     View(context, attrs, defStyleAttr) {
 
-    companion object {
-        var RecyclerView.minimap: MinimapView
-            get() = MinimapView(context).apply { setRecyclerView(this@minimap) }
-            set(value) = value.setRecyclerView(this@minimap)
-    }
-
     private val a: TypedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MinimapView)
 
     var maxSize = a.getDimension(R.styleable.MinimapView_minimapMaxSize, 0f)
@@ -172,3 +166,7 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
 }
+
+var RecyclerView.minimap: MinimapView
+    get() = MinimapView(context).apply { setRecyclerView(this@minimap) }
+    set(value) = value.setRecyclerView(this@minimap)

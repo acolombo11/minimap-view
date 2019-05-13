@@ -24,7 +24,7 @@ Add the dependency
 implementation 'eu.acolombo:minimap-view:0.1.1'
 ```
 
-At the moment only an AndroidX release is available, but I will add a Support version in the next days.
+If you wish to use this library but you're still using Support libraries, you can either migrate to AndroidX or downgrade the library and make a pull-request to help other people in your situation.
 
 ### Get started
 Add the minimap in your layout customizing the properties you need
@@ -55,14 +55,14 @@ For the library to work properly, the LayoutManager used in your RecyclerView sh
 
 ## Docs
 
-The MinimapView indicator matches the size of the visible area of the RecycleView, while its background matches the size of the scrollable area of the RecyclerView. Both parts of the MinimapView will auto-update when the RecyclerView visible size or scrollable size will change. The calculations to have the indicator and the background match all the possible cases are not that trivial. To keep correct ratios and positions correct there are many different scenarios you have to think about, for example when the size of the RecyclerView is bigger than its scrollable area... So I made a scheme with all the measurement names
+The MinimapView indicator matches the size of the visible area of the RecycleView, while its background matches the size of the scrollable area of the RecyclerView. Both parts of the MinimapView will auto-update when the RecyclerView visible size or scrollable size will change. The calculations to have the indicator and the background match all the possible cases are not that trivial. To keep ratios and positions correct, there are many different scenarios you have to think about, for example when the size of the RecyclerView is bigger than its scrollable area. So I made a scheme with all the measurement names
 ![scheme](docs/scheme.svg)
 
 For the moment the library lets you select one max size, and the MinimapView width or height will have to stay inside that size, keeping its form factor.
 
 ### Credits
-- [Devunwired's FixedGridLayoutManager](https://github.com/devunwired/recyclerview-playground) - Layout Manager used in the example
-- [Freepik's Car Vector](https://www.freepik.com/free-vector/top-view-of-flat-cars-on-parking-lot_1349624.htm) - Vector graphics used in the example
+- [Devunwired's FixedGridLayoutManager](https://github.com/devunwired/recyclerview-playground) - Layout Manager used in the example app
+- [Freepik's Car Vector](https://www.freepik.com/free-vector/top-view-of-flat-cars-on-parking-lot_1349624.htm) - Vector graphics used in the example app
 
 ### Projects using minimap-view
-- [mywellness](https://play.google.com/store/apps/details?id=com.technogym.mywellness) - [screenshot dark](docs/screenshots/Screenshot_20181212-000709.png) - [screenshot light](docs/screenshots/Screenshot_1544703153.png)
+- [mywellness](https://play.google.com/store/apps/details?id=com.technogym.mywellness) : [dark](docs/screenshots/Screenshot_20181212-000709.png) , [light](docs/screenshots/Screenshot_1544703153.png)
