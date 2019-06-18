@@ -45,7 +45,7 @@ Add the minimap in your layout customizing the properties you need:
     app:minimapMaxSize="160dp"/>
 ```
 Then link it to your RecyclerView:
-> Koltin
+> Kotlin
 ```
 recyclerView.minimap(minimapView)
 ```
@@ -59,10 +59,11 @@ For the library to work properly, the <mark>LayoutManager used in your RecyclerV
 
 ## Docs
 
-The MinimapView indicator matches the size of the visible area of the RecycleView, while its background matches the size of the scrollable area of the RecyclerView. Both parts of the MinimapView will auto-update when the RecyclerView visible size or scrollable size will change. The calculations to have the indicator and the background match all the possible cases are not that trivial. To keep ratios and positions correct, there are many different scenarios you have to think about, for example when the size of the RecyclerView is bigger than its scrollable area. So I made a scheme with all the measurement names
-![scheme](docs/scheme.svg)
+The MinimapView indicator matches the size of the visible area of the RecycleView, while its background matches the size of the scrollable area of the RecyclerView. Both parts of the MinimapView will auto-update when the RecyclerView visible size or scrollable size will change. The calculations to have the indicator and the background match all the possible cases are not that trivial. To keep ratios and positions correct, there are many different scenarios you have to think about, for example when the size of the RecyclerView is bigger than its scrollable area. So I made a scheme with all the measurement names:
 
-For the moment the library lets you select one max size, and the MinimapView width or height will have to stay inside that size, keeping its form factor.
+<img src="docs/scheme.svg" width="600">
+
+For the moment the library lets you select one max size, and the MinimapView width or height will have to stay inside that size, keeping its form factor. Instead of one max size, having both a max-height and a max-width would be ideal.
 
 ### Credits
 - [Devunwired's FixedGridLayoutManager](https://github.com/devunwired/recyclerview-playground) - Layout Manager used in the example app
