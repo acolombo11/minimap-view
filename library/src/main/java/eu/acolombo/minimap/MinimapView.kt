@@ -7,8 +7,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.view.doOnLayout
-import androidx.core.view.doOnNextLayout
 import androidx.core.view.doOnPreDraw
 import androidx.recyclerview.widget.RecyclerView
 
@@ -18,10 +16,24 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private val a: TypedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MinimapView)
 
     var maxSize = a.getDimension(R.styleable.MinimapView_minimapMaxSize, 0f)
-    var borderWidth = a.getDimension(R.styleable.MinimapView_minimapBorderWidth, 0f)
+        // TODO Set with invalidate()
     var cornerRadius = a.getDimension(R.styleable.MinimapView_minimapCornerRadius, 0f)
+        // TODO Set with invalidate()
     var mapBackgroundColor = a.getColor(R.styleable.MinimapView_minimapBackgroundColor, Color.GRAY)
+        set(value) {
+            field = value
+            backgroundPaint.color = value
+        }
     var indicatorColor = a.getColor(R.styleable.MinimapView_minimapIndicatorColor, Color.WHITE)
+        set(value) {
+            field = value
+            indicatorPaint.color = value
+        }
+    var borderWidth = a.getDimension(R.styleable.MinimapView_minimapBorderWidth, 0f)
+        set(value) {
+            field = value
+            indicatorPaint.strokeWidth = value
+        }
 
     init {
         a.recycle()
@@ -93,7 +105,7 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         }
     }
 
-    private fun View.updateVisibility() : Boolean {
+    private fun View.updateVisibility(): Boolean {
         if (!shouldBeVisible()) visibility = GONE
         return visibility == VISIBLE
     }
