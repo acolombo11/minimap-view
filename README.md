@@ -25,7 +25,7 @@ Add the dependency in your app  `build.gradle`
 implementation 'eu.acolombo:minimap-view:0.1.1'
 ```
 
-If you wish to use this library but you're still using Support libraries, you can either migrate to AndroidX or contribute by creating a different branch, downgrade the library and open a pull-request on the newly created branch.
+This library is AndroidX only, if you are still using Support libraries you can either migrate your app to AndroidX or you can contribute by downgrading the dependencies and subitting a pull-request, which will be merged in a different branch.
 
 ### Get started
 Add the minimap in your layout customizing the properties you need
