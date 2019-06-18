@@ -3,9 +3,9 @@ package eu.acolombo.minimap.example
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import eu.acolombo.minimap.MinimapView.Companion.minimap
 import eu.acolombo.minimap.example.data.Car
 import eu.acolombo.minimap.example.data.Parking
+import eu.acolombo.minimap.minimap
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -60,6 +60,9 @@ class MainActivity : AppCompatActivity() {
         updateCounter(adapter.emptyParkingSpots)
         removedLines++
         if (removedLines == 4) removedLines = 0
+
+        // If we are still having problems in the future, make updateScaleFactor public and use it when notifying adapter changes like this:
+        // minimapView.updateScaleFactor(recyclerView)
     }
 
     private fun updateCounter(count: Int) {

@@ -7,6 +7,9 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.view.doOnLayout
+import androidx.core.view.doOnNextLayout
+import androidx.core.view.doOnPreDraw
 import androidx.recyclerview.widget.RecyclerView
 
 class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
@@ -52,13 +55,9 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     fun setRecyclerView(recyclerView: RecyclerView) {
         // Wait for recyclerView to be measured before doing anything with the minimap
-        recyclerView.addLayoutChangeListenerHandler {
-            updateScaleFactor(this)
-        }
+        recyclerView.addLayoutChangeListener { doOnPreDraw { updateScaleFactor(recyclerView) } }
 
-        recyclerView.addScrollListener { dx, dy ->
-            if (this@MinimapView.visibility == View.VISIBLE) moveIndicator(dx, dy)
-        }
+        recyclerView.addScrollListener { dx, dy -> if (this@MinimapView.visibility == VISIBLE) moveIndicator(dx, dy) }
     }
 
     private fun updateScaleFactor(rv: RecyclerView) {
@@ -94,12 +93,9 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         }
     }
 
-    private fun View.updateVisibility() = if (this.shouldBeVisible()) {
-        visibility = this.visibility
-        this.visibility == View.VISIBLE
-    } else {
-        visibility = View.GONE
-        false
+    private fun View.updateVisibility() : Boolean {
+        if (!shouldBeVisible()) visibility = GONE
+        return visibility == VISIBLE
     }
 
     private fun View?.shouldBeVisible() = this != null && (scrollWidth > this.width || scrollHeight > this.height)
