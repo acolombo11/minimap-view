@@ -9,8 +9,16 @@ Example app (parking lot) showing different scenarios and sizes:
 ![big parking lot](docs/screenshots/Screenshot_20181212-231326.png)
 ![small parking lot](docs/screenshots/Screenshot_20181212-231340.png)
 
-## Download   [![Release](https://jitpack.io/v/eu.acolombo/minimap-view.svg)](https://jitpack.io/#eu.acolombo/minimap-view)
-Add JitPack in your root `build.gradle` if you haven't done so already
+## Download
+
+Add the dependency in your app  `build.gradle` with the current version number:
+
+[![Release](https://jitpack.io/v/eu.acolombo/minimap-view.svg)](https://jitpack.io/#eu.acolombo/minimap-view)
+```
+implementation 'eu.acolombo:minimap-view:c.v.n'
+```
+
+If you haven't done so already for other libraries, you also have to add JitPack in your root `build.gradle`:
 ```
 allprojects {
     repositories {
@@ -20,15 +28,11 @@ allprojects {
 }
 ```
 
-Add the dependency in your app  `build.gradle`
-```
-implementation 'eu.acolombo:minimap-view:0.1.1'
-```
-
 This library is AndroidX only, if you are still using Support libraries you can either migrate your app to AndroidX or you can contribute by downgrading the dependencies and subitting a pull-request, which will be merged in a different branch.
 
 ### Get started
-Add the minimap in your layout customizing the properties you need
+Add the minimap in your layout customizing the properties you need:
+> XML
 ```
 <eu.acolombo.minimap.MinimapView
     android:id="@+id/minimapView"
@@ -40,17 +44,18 @@ Add the minimap in your layout customizing the properties you need
     app:minimapCornerRadius="5dp"
     app:minimapMaxSize="160dp"/>
 ```
-Then link it to your RecyclerView
+Then link it to your RecyclerView:
+> Koltin
 ```
 recyclerView.minimap(minimapView)
 ```
-Or, if you're using Java, do it this way
+> Java
 ```
 MinimapView minimapView = findViewById(R.id.minimapView)
 minimapView.setRecyclerView(recyclerView)
 ```
 
-For the library to work properly, the LayoutManager used in your RecyclerView should implement computeHorizontalScrollRange and computeVerticalScrollRange, not all of them do by default.
+For the library to work properly, the <mark>LayoutManager used in your RecyclerView should implement computeHorizontalScrollRange and computeVerticalScrollRange</mark>, not all of them do by default.
 
 ## Docs
 
