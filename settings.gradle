@@ -1,2 +1,2 @@
 include ':app', ':minimap-view'
-rootProject.name='minimap-view-example'
+rootProject.name='minimap-view-library'
