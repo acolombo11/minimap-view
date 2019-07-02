@@ -5,7 +5,7 @@ A minimap view library for Android. The miniature map is usually placed in the c
 ![big parking lot](docs/screenshots/Screenshot_20181212-231326.png)
 ![small parking lot](docs/screenshots/Screenshot_20181212-231340.png)
 
-## Download %nbsp; [![Release](https://jitpack.io/v/eu.acolombo/minimap-view.svg)](https://jitpack.io/#eu.acolombo/minimap-view)
+## Download &nbsp; [![Release](https://jitpack.io/v/eu.acolombo/minimap-view.svg)](https://jitpack.io/#eu.acolombo/minimap-view)
 
 Add the dependency in your app  `build.gradle` with the current version number:
 ```gradle
