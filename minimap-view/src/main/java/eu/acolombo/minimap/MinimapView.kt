@@ -76,7 +76,7 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         scrollWidth = rv.computeHorizontalScrollRange().toFloat()
         scrollHeight = rv.computeVerticalScrollRange().toFloat()
 
-        if (rv.updateVisibility()) {
+        if (updateVisibility()) {
 
             // Scrollable height might be < than the scrollable width while scrollable width being < than total height of the RecyclerView
             val biggerWidth = maxOf(scrollWidth, rv.width.toFloat()) // + rv.paddingRight + rv.paddingLeft
