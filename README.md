@@ -9,7 +9,7 @@ A minimap view library for Android. The miniature map is usually placed in the c
 
 Add the dependency in your app  `build.gradle` with the current version number:
 ```gradle
-implementation 'eu.acolombo:minimap-view:0.3.2'
+implementation 'eu.acolombo:minimap-view:1.0.0'
 ```
 
 If you haven't done so already for other libraries, you also have to add JitPack in your root `build.gradle`:
