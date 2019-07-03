@@ -2,8 +2,8 @@
 
 A minimap view library for Android. The miniature map is usually placed in the corner of the screen, to help the user in orienting himself in a screen with a big Recycler View. Check the example by cloning the repo and starting the example app, or by downloading the APK from [Releases](https://github.com/acolombo25/minimap-view/releases). The example app is a resizable parking lot, showing a few scenarios of the library responding to resizes:
 
-![big parking lot](docs/screenshots/Screenshot_20181212-231326.png)
-![small parking lot](docs/screenshots/Screenshot_20181212-231340.png)
+![big parking lot](docs/screenshots/ex-1.jpg)
+![small parking lot](docs/screenshots/ex-2.jpg)
 
 ## Download &nbsp; [![Release](https://jitpack.io/v/eu.acolombo/minimap-view.svg)](https://jitpack.io/#eu.acolombo/minimap-view)
 
@@ -64,4 +64,4 @@ For the moment the library lets you select one max size, and the MinimapView wid
 - [Freepik's Car Vector](https://www.freepik.com/free-vector/top-view-of-flat-cars-on-parking-lot_1349624.htm) - Vector graphics used in the example app
 
 ### Projects using minimap-view
-- [mywellness](https://play.google.com/store/apps/details?id=com.technogym.mywellness) : [dark](docs/screenshots/Screenshot_20181212-000709.png) , [light](docs/screenshots/Screenshot_1544703153.png)
+- [mywellness](https://play.google.com/store/apps/details?id=com.technogym.mywellness) : [dark](docs/screenshots/mw-b.png) , [light](docs/screenshots/mw-w.png)
