@@ -1,28 +1,22 @@
 # minimap-view
 
-A minimap view library for Android. The miniature map is usually placed in the corner of the screen, to help the user in orienting himself in a screen with a big Recycler View. Check the example by cloning the repo and starting the example app.
-
-## Screenshots
-
-Example app (parking lot) showing different scenarios and sizes:
+A minimap view library for Android. The miniature map is usually placed in the corner of the screen, to help the user in orienting himself in a screen with a big Recycler View. Check the example by cloning the repo and starting the example app, or by downloading the APK from [Releases](https://github.com/acolombo25/minimap-view/releases). The example app is a resizable parking lot, showing a few scenarios of the library responding to resizes:
 
 ![big parking lot](docs/screenshots/Screenshot_20181212-231326.png)
 ![small parking lot](docs/screenshots/Screenshot_20181212-231340.png)
 
-## Download
+## Download &nbsp; [![Release](https://jitpack.io/v/eu.acolombo/minimap-view.svg)](https://jitpack.io/#eu.acolombo/minimap-view)
 
 Add the dependency in your app  `build.gradle` with the current version number:
-
-[![Release](https://jitpack.io/v/eu.acolombo/minimap-view.svg)](https://jitpack.io/#eu.acolombo/minimap-view)
-```
-implementation 'eu.acolombo:minimap-view:c.v.n'
+```gradle
+implementation 'eu.acolombo:minimap-view:0.3.2'
 ```
 
 If you haven't done so already for other libraries, you also have to add JitPack in your root `build.gradle`:
-```
+```gradle
 allprojects {
     repositories {
-        ...
+        ..
         maven { url 'https://jitpack.io' }
     }
 }
@@ -33,7 +27,7 @@ This library is AndroidX only, if you are still using Support libraries you can 
 ### Get started
 Add the minimap in your layout customizing the properties you need:
 > XML
-```
+```xml
 <eu.acolombo.minimap.MinimapView
     android:id="@+id/minimapView"
     android:layout_width="wrap_content"
@@ -46,11 +40,11 @@ Add the minimap in your layout customizing the properties you need:
 ```
 Then link it to your RecyclerView:
 > Kotlin
-```
+```kotlin
 recyclerView.minimap(minimapView)
 ```
 > Java
-```
+```java
 MinimapView minimapView = findViewById(R.id.minimapView)
 minimapView.setRecyclerView(recyclerView)
 ```
