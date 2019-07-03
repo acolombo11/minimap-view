@@ -76,7 +76,7 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         scrollWidth = rv.computeHorizontalScrollRange().toFloat()
         scrollHeight = rv.computeVerticalScrollRange().toFloat()
 
-        if (updateVisibility()) {
+        if (rv.updateVisibility()) {
 
             // Scrollable height might be < than the scrollable width while scrollable width being < than total height of the RecyclerView
             val biggerWidth = maxOf(scrollWidth, rv.width.toFloat()) // + rv.paddingRight + rv.paddingLeft
@@ -106,11 +106,11 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     private fun View.updateVisibility(): Boolean {
-        if (!shouldBeVisible()) visibility = GONE
+        if (!shouldShow()) this@MinimapView.visibility = GONE
         return visibility == VISIBLE
     }
 
-    private fun View?.shouldBeVisible() = this != null && (scrollWidth > this.width || scrollHeight > this.height)
+    private fun View?.shouldShow() = this != null && (scrollWidth > this.width || scrollHeight > this.height)
 
     private fun moveIndicator(dx: Int, dy: Int) = if (scaleFactor != 0f) {
         indicatorX += dx / scaleFactor
