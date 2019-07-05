@@ -2,8 +2,7 @@
 
 A minimap view library for Android. The miniature map is usually placed in the corner of the screen, to help the user in orienting himself in a screen with a big Recycler View. Check the example by cloning the repo and starting the example app, or by downloading the APK from [Releases](https://github.com/acolombo25/minimap-view/releases). The example app is a resizable parking lot, showing a few scenarios of the library responding to resizes:
 
-![big parking lot](docs/screenshots/ex-1.jpg)
-![small parking lot](docs/screenshots/ex-2.jpg)
+<img src="docs/screenshots/ex-1.jpg" width="360"> <img src="docs/screenshots/ex-2.jpg" width="360">
 
 ## Download &nbsp; [![Release](https://jitpack.io/v/eu.acolombo/minimap-view.svg)](https://jitpack.io/#eu.acolombo/minimap-view)
 

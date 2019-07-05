@@ -1,12 +1,16 @@
 package eu.acolombo.minimap.example
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import eu.acolombo.minimap.example.data.Car
 import eu.acolombo.minimap.example.data.Parking
 import eu.acolombo.minimap.minimap
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var removedLines = 0
+    private val rnd = Random(69)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,5 +140,43 @@ class MainActivity : AppCompatActivity() {
         return bigParkingLot
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_tests, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return when (item.itemId) {
+            R.id.action_test_size -> {
+                minimapView.maxSize = getRandomSize().toFloat()
+                true
+            }
+            R.id.action_test_corner -> {
+                minimapView.cornerRadius = getRandomRadius().toFloat()
+                true
+            }
+            R.id.action_test_background -> {
+                minimapView.mapBackgroundColor = getRandomColor()
+                true
+            }
+            R.id.action_test_color -> {
+                minimapView.indicatorColor = getRandomColor()
+                true
+            }
+            R.id.action_test_border -> {
+                minimapView.borderWidth = getRandomRadius()/2.toFloat()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun getRandomSize() = rnd.nextInt(200,600)
+    private fun getRandomRadius() = rnd.nextInt(0,30)
+    private fun getRandomColor() = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
 
 }

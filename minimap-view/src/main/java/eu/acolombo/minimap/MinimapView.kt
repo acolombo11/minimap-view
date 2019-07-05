@@ -16,23 +16,32 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private val a: TypedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MinimapView)
 
     var maxSize = a.getDimension(R.styleable.MinimapView_minimapMaxSize, 0f)
-        // TODO Set with invalidate()
+        set(value) {
+            field = value
+            currentScrollableView?.requestLayout()
+        }
     var cornerRadius = a.getDimension(R.styleable.MinimapView_minimapCornerRadius, 0f)
-        // TODO Set with invalidate()
+        set(value) {
+            field = value
+            invalidate()
+        }
     var mapBackgroundColor = a.getColor(R.styleable.MinimapView_minimapBackgroundColor, Color.GRAY)
         set(value) {
             field = value
             backgroundPaint.color = value
+            invalidate()
         }
     var indicatorColor = a.getColor(R.styleable.MinimapView_minimapIndicatorColor, Color.WHITE)
         set(value) {
             field = value
             indicatorPaint.color = value
+            invalidate()
         }
     var borderWidth = a.getDimension(R.styleable.MinimapView_minimapBorderWidth, 0f)
         set(value) {
             field = value
             indicatorPaint.strokeWidth = value
+            invalidate()
         }
 
     init {
@@ -65,18 +74,22 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         strokeWidth = borderWidth
     }
 
+    private var currentScrollableView : View ? = null
+
     fun setRecyclerView(recyclerView: RecyclerView) {
         // Wait for recyclerView to be measured before doing anything with the minimap
-        recyclerView.addLayoutChangeListener { doOnPreDraw { updateScaleFactor(recyclerView) } }
+        recyclerView.addLayoutChangeListener { recyclerView.doOnPreDraw { updateScaleFactor(recyclerView) } }
 
-        recyclerView.addScrollListener { dx, dy -> if (this@MinimapView.visibility == VISIBLE) moveIndicator(dx, dy) }
+        recyclerView.addScrollListener { dx, dy -> if (visibility == VISIBLE) moveIndicator(dx, dy) }
+
+        currentScrollableView = recyclerView
     }
 
     private fun updateScaleFactor(rv: RecyclerView) {
         scrollWidth = rv.computeHorizontalScrollRange().toFloat()
         scrollHeight = rv.computeVerticalScrollRange().toFloat()
 
-        if (rv.updateVisibility()) {
+        if (updateMapVisibility(rv)) {
 
             // Scrollable height might be < than the scrollable width while scrollable width being < than total height of the RecyclerView
             val biggerWidth = maxOf(scrollWidth, rv.width.toFloat()) // + rv.paddingRight + rv.paddingLeft
@@ -105,12 +118,12 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         }
     }
 
-    private fun View.updateVisibility(): Boolean {
-        if (!shouldShow()) this@MinimapView.visibility = GONE
+    private fun updateMapVisibility(scrollableView: View): Boolean {
+        if (!scrollableView.isBigger()) visibility = GONE
         return visibility == VISIBLE
     }
 
-    private fun View?.shouldShow() = this != null && (scrollWidth > this.width || scrollHeight > this.height)
+    private fun View?.isBigger() = this != null && (scrollWidth > this.width || scrollHeight > this.height)
 
     private fun moveIndicator(dx: Int, dy: Int) = if (scaleFactor != 0f) {
         indicatorX += dx / scaleFactor

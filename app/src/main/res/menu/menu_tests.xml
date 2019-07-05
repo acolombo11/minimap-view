@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="eu.acolombo.myapplication.MainActivity">
+    <item android:id="@+id/action_test_size"
+          android:title="@string/action_test_size"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_test_color"
+          android:title="@string/action_test_color"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_test_corner"
+          android:title="@string/action_test_corner"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_test_background"
+          android:title="@string/action_test_background"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_test_border"
+          android:title="@string/action_test_border"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+</menu>
