@@ -21,6 +21,8 @@ allprojects {
 }
 ```
 
+Another option is, since it's only one file, to import [MinimapView.kt](src/main/java/eu/acolombo/minimap/MinimapView.kt) directly in your project.
+
 This library is AndroidX only, if you are still using Support libraries you can either migrate your app to AndroidX or you can contribute by downgrading the dependencies and subitting a pull-request, which will be merged in a different branch.
 
 ### Get started
