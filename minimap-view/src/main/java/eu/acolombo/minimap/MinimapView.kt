@@ -10,6 +10,10 @@ import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.recyclerview.widget.RecyclerView
 
+var RecyclerView.minimap: MinimapView
+    get() = MinimapView(context).apply { setRecyclerView(this@minimap) }
+    set(value) = value.setRecyclerView(this@minimap)
+
 class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     View(context, attrs, defStyleAttr) {
 
@@ -120,11 +124,11 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     private fun updateMapVisibility(scrollableView: View): Boolean {
-        if (!scrollableView.isBigger()) visibility = GONE
+        if (!scrollableView.isScrollable()) visibility = GONE
         return visibility == VISIBLE
     }
 
-    private fun View?.isBigger() = this != null && (scrollWidth > this.width || scrollHeight > this.height)
+    private fun View?.isScrollable() = this != null && (scrollWidth > this.width || scrollHeight > this.height)
 
     private fun moveIndicator(dx: Int, dy: Int) = if (scaleFactor != 0f) {
         indicatorX += dx / scaleFactor
@@ -189,6 +193,18 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
 }
 
-var RecyclerView.minimap: MinimapView
-    get() = MinimapView(context).apply { setRecyclerView(this@minimap) }
-    set(value) = value.setRecyclerView(this@minimap)
+// Extensions to have cleaner code in [setRecyclerView]
+fun RecyclerView.addScrollListener(func: (dx: Int, dy: Int) -> Unit) {
+    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            func(dx, dy)
+        }
+    })
+}
+
+fun View.addLayoutChangeListener(func: () -> Unit) {
+    addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+        func()
+    }
+}
