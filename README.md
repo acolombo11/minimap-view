@@ -65,4 +65,4 @@ For the moment the library lets you select one max size, and the MinimapView wid
 - [Freepik's Car Vector](https://www.freepik.com/free-vector/top-view-of-flat-cars-on-parking-lot_1349624.htm) - Vector graphics used in the example app
 
 ### Projects using minimap-view
-- [mywellness](https://play.google.com/store/apps/details?id=com.technogym.mywellness) : [dark](docs/screenshots/mw-b.png) , [light](docs/screenshots/mw-w.png)
+- [mywellness](https://play.google.com/store/apps/details?id=com.technogym.mywellness) : [dark](docs/screenshots/mw-b-1.png) , [light](docs/screenshots/mw-w-1.png)
