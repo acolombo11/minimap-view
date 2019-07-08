@@ -77,8 +77,9 @@ class MinimapView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private var currentScrollableView : View ? = null
 
     fun setRecyclerView(recyclerView: RecyclerView) {
-        // Wait for recyclerView to be measured before doing anything with the minimap
-        recyclerView.addLayoutChangeListener { recyclerView.doOnPreDraw { updateScaleFactor(recyclerView) } }
+        recyclerView.doOnPreDraw { updateScaleFactor(recyclerView) }
+
+        recyclerView.addLayoutChangeListener { updateScaleFactor(recyclerView) }
 
         recyclerView.addScrollListener { dx, dy -> if (visibility == VISIBLE) moveIndicator(dx, dy) }
 
