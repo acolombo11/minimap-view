@@ -1,6 +1,11 @@
 # minimap-view
 
-A minimap view library for Android. The miniature map is usually placed in the corner of the screen, to help the user in orienting himself in a screen with a big Recycler View. Check the example by cloning the repo and starting the example app, or by downloading the APK from [Releases](https://github.com/acolombo25/minimap-view/releases). The example app is a resizable parking lot, showing a few scenarios of the library responding to resizes:
+A minimap view library for Android.
+
+The miniature map is usually placed in the corner of the screen, to help the user in orienting himself in a screen with a big RecyclerView.
+Check the example by cloning the repo and starting the demo app, or by downloading the APK from [Releases](https://github.com/acolombo25/minimap-view/releases).
+
+The example shown in the demo app is a resizable parking lot, showing a few scenarios of the library responding to resizes:
 
 <img src="docs/screenshots/ex-1.jpg" width="360"> <img src="docs/screenshots/ex-2.jpg" width="360">
 
@@ -11,7 +16,7 @@ Add the dependency in your app  `build.gradle` with the current version number:
 implementation 'eu.acolombo:minimap-view:1.0.3'
 ```
 
-If you haven't done so already for other libraries, you also have to add JitPack in your root `build.gradle`:
+Add JitPack in your root `build.gradle`:
 ```gradle
 allprojects {
     repositories {
@@ -21,9 +26,7 @@ allprojects {
 }
 ```
 
-Another option is, since it's only one file, to import [MinimapView.kt](minimap-view/src/main/java/eu/acolombo/minimap/MinimapView.kt) directly in your project.
-
-This library is AndroidX only, if you are still using Support libraries you can either migrate your app to AndroidX or you can contribute by downgrading the dependencies and subitting a pull-request, which will be merged in a different branch.
+Another option is to copy the single file [MinimapView.kt](minimap-view/src/main/java/eu/acolombo/minimap/MinimapView.kt) directly in your project.
 
 ### Get started
 Add the minimap in your layout customizing the properties you need:
@@ -50,7 +53,7 @@ MinimapView minimapView = findViewById(R.id.minimapView)
 minimapView.setRecyclerView(recyclerView)
 ```
 
-For the library to work properly, the <mark>LayoutManager used in your RecyclerView should implement computeHorizontalScrollRange and computeVerticalScrollRange</mark>, not all of them do by default.
+For the library to work properly, the <mark>LayoutManager used in your RecyclerView should implement computeHorizontalScrollRange and computeVerticalScrollRange</mark>, not all LayoutManagers do by default.
 
 ## Docs
 
