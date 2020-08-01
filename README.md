@@ -1,9 +1,9 @@
 # minimap-view
 
-A minimap view library for Android.
+A minimap view library for Android RecyclerView.
 
-The miniature map is usually placed in the corner of the screen, to help the user in orienting himself in a screen with a big RecyclerView.
-Check the example by cloning the repo and starting the demo app, or by downloading the APK from [Releases](https://github.com/acolombo25/minimap-view/releases).
+The miniature map is usually placed in the corner of the screen, to help the user in orienting himself in a screen with a big scrolling view.
+Check the example by cloning the repo and starting the demo app, or by downloading the [Release](https://github.com/acolombo25/minimap-view/releases) APK.
 
 The example shown in the demo app is a resizable parking lot, showing a few scenarios of the library responding to resizes:
 
@@ -28,7 +28,7 @@ allprojects {
 
 Another option is to copy the single file [MinimapView.kt](minimap-view/src/main/java/eu/acolombo/minimap/MinimapView.kt) directly in your project.
 
-### Get started
+## Usage
 Add the minimap in your layout customizing the properties you need:
 > XML
 ```xml
@@ -61,11 +61,14 @@ The MinimapView indicator matches the size of the visible area of the RecycleVie
 
 <img src="docs/scheme.svg" width="600">
 
-For the moment the library lets you select one max size, and the MinimapView width or height will have to stay inside that size, keeping its form factor. Instead of one max size, having both a max-height and a max-width would be ideal.
+### State
 
-### Credits
-- [Devunwired's FixedGridLayoutManager](https://github.com/devunwired/recyclerview-playground) - Layout Manager used in the example app
-- [Freepik's Car Vector](https://www.freepik.com/free-vector/top-view-of-flat-cars-on-parking-lot_1349624.htm) - Vector graphics used in the example app
+For the moment the library lets you select one max size, and the MinimapView width or height will have to stay inside that size, keeping its form factor. Instead of one max size, having both a max-height and a max-width would be ideal. Also it would be cool to support not only RecyclerView but other scrolling views.
+
+## Thanks
+- [Devunwired](https://github.com/devunwired/recyclerview-playground) for the Layout Manager used in the example app
+- [Freepik](https://www.freepik.com/free-vector/top-view-of-flat-cars-on-parking-lot_1349624.htm) for the vector graphics used in the example app
 
 ### Projects using minimap-view
-- [mywellness](https://play.google.com/store/apps/details?id=com.technogym.mywellness) : [dark](docs/screenshots/mw-b-1.png) , [light](docs/screenshots/mw-w-1.png)
+- [mywellness](https://play.google.com/store/apps/details?id=com.technogym.mywellness): [Dark theme](docs/screenshots/mw-b-1.png), [Light theme](docs/screenshots/mw-w-1.png)
+- Let me know if you're using it in you project 
